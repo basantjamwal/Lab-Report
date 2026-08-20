@@ -124,6 +124,12 @@ async function executeCpp(fileContent) {
 
 app.post('/api/generate', upload.array('files'), async (req, res) => {
     try {
+
+        const { name, enroll } = req.body
+        if (!name || !enroll || !name.trim() || !enroll.trim()) {
+            return res.status(400).send('Name and enrollment number are required.');
+        }
+
         const files = req.files;
         if (!files || files.length === 0) {
             return res.status(400).send('No files uploaded.');
@@ -141,7 +147,7 @@ app.post('/api/generate', upload.array('files'), async (req, res) => {
 
         for (const [fileIndex, file] of files.entries()) {
             const fileContent = file.buffer.toString('utf-8');
-            
+
             // Read the first question comment, supporting both // and /* ... */ styles.
             const lineQuestionMatch = fileContent.match(/^\s*\/\/\s?(.*)$/m);
             const blockQuestionMatch = fileContent.match(/\/\*([\s\S]*?)\*\//);
@@ -149,13 +155,13 @@ app.post('/api/generate', upload.array('files'), async (req, res) => {
                 || blockQuestionMatch?.[1].trim()
                 || "No question found";
             const displayContent = removeCppComments(fileContent);
-            
+
             const output = await executeCpp(fileContent);
 
             // Append this file's result to the HTML template
             combinedHtml += `
                 <div class="report mx-auto min-h-full max-w-4xl break-inside-avoid bg-white p-10 shadow-sm ${fileIndex > 0 ? 'break-before-page' : ''}">
-                    <div class="mb-10 text-right text-xs text-gray-600">Basant Singh Jamwal (2025BCSE085)</div>
+                    <div class="mb-10 text-right text-xs text-gray-600">${name} (${enroll})</div>
                     <h1 class="mb-6 text-xl text-[#10346c]">
                         ${escapeHtml(question)}
                     </h1>
@@ -180,10 +186,10 @@ app.post('/api/generate', upload.array('files'), async (req, res) => {
         const browser = await puppeteer.launch({ headless: true });
         const page = await browser.newPage();
         await page.setContent(combinedHtml, { waitUntil: 'networkidle0' });
-        
-        const pdfBuffer = await page.pdf({ 
+
+        const pdfBuffer = await page.pdf({
             format: 'A4',
-            printBackground: true 
+            printBackground: true
         });
 
         await browser.close();

@@ -6,6 +6,8 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [error, setError] = useState('');
+  const [name, setName] = useState("")
+  const [enroll, setEnroll] = useState("")
 
   const onDrop = useCallback(async (acceptedFiles) => {
     if (acceptedFiles.length === 0) {
@@ -13,15 +15,22 @@ function App() {
       return;
     }
 
+    if (!name.trim() || !enroll.trim()) {
+      setError('Please enter your name and enrollment number first.');
+      return;
+    }
+
     setSelectedFiles(acceptedFiles);
     setError('');
     setLoading(true);
     const formData = new FormData();
-    
+
     // Append all dragged C++ files to the FormData object
     acceptedFiles.forEach(file => {
       formData.append('files', file);
     });
+    formData.append('name', name.trim());
+    formData.append('enroll', enroll.trim());
 
     try {
       // Post to backend and expect a PDF blob in return
@@ -47,9 +56,9 @@ function App() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [enroll, name]);
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ 
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: { 'text/x-c++src': ['.cpp'] } // Only accept C++ files
   });
@@ -59,7 +68,20 @@ function App() {
       <section className="mx-auto min-h-[calc(100vh-96px)] max-w-[960px] overflow-hidden bg-white text-[#253044] shadow-[0_18px_50px_rgba(37,48,68,0.12)] max-[640px]:min-h-screen" aria-label="C++ program document">
         <header className="flex justify-between gap-6 border-b border-[#e6e9ed] px-16 py-7 text-[11px] uppercase tracking-[0.1em] text-[#687284] max-[640px]:flex-col max-[640px]:items-start max-[640px]:gap-2.5 max-[640px]:px-5 max-[640px]:py-[22px]">
           <span className="eyebrow">LAB REPORT / PROGRAM DOCUMENT</span>
-          <span className="text-right normal-case tracking-[0.02em] text-[#526079] max-[640px]:text-left">Basant Singh Jamwal <strong className="font-bold text-[#163f76]">(2025BCSE085)</strong></span>
+          <span className="text-right normal-case tracking-[0.02em] text-[#526079] max-[640px]:text-left"> <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Enter your name"
+            className="border border-[#c8d7e7] px-2 py-1 text-xs text-[#243a58] focus:border-[#2c70b7] focus:outline-none"
+          />
+            <input
+              type="text"
+              value={enroll}
+              onChange={(e) => setEnroll(e.target.value)}
+              placeholder="Enrollment No."
+              className="border border-[#c8d7e7] px-2 py-1 text-xs text-[#163f76] font-bold focus:border-[#2c70b7] focus:outline-none"
+            /></span>
         </header>
 
         <div className="mx-auto max-w-[832px] px-8 pb-20 pt-16 max-[640px]:px-5 max-[640px]:pb-14 max-[640px]:pt-[42px]">
