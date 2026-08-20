@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
-import './App.css';
 
 function App() {
   const [loading, setLoading] = useState(false);
@@ -56,62 +55,62 @@ function App() {
   });
 
   return (
-    <main className="app-shell">
-      <section className="report-paper" aria-label="C++ program document">
-        <header className="report-header">
-          <span className="eyebrow">OOPS LAB / PROGRAM DOCUMENT</span>
-          <span className="student-name">Basant Singh Jamwal <strong>(2025BCSE085)</strong></span>
+    <main className="min-h-screen bg-[#e9ecef] px-6 py-12 max-[640px]:p-0">
+      <section className="mx-auto min-h-[calc(100vh-96px)] max-w-[960px] overflow-hidden bg-white text-[#253044] shadow-[0_18px_50px_rgba(37,48,68,0.12)] max-[640px]:min-h-screen" aria-label="C++ program document">
+        <header className="flex justify-between gap-6 border-b border-[#e6e9ed] px-16 py-7 text-[11px] uppercase tracking-[0.1em] text-[#687284] max-[640px]:flex-col max-[640px]:items-start max-[640px]:gap-2.5 max-[640px]:px-5 max-[640px]:py-[22px]">
+          <span className="eyebrow">LAB REPORT / PROGRAM DOCUMENT</span>
+          <span className="text-right normal-case tracking-[0.02em] text-[#526079] max-[640px]:text-left">Basant Singh Jamwal <strong className="font-bold text-[#163f76]">(2025BCSE085)</strong></span>
         </header>
 
-        <div className="report-content">
-          <p className="section-kicker">Experiment 01</p>
-          <h1>Generate your C++ program report</h1>
-          <p className="report-intro">Upload one or more source files and receive a formatted PDF with the code and execution output.</p>
+        <div className="mx-auto max-w-[832px] px-8 pb-20 pt-16 max-[640px]:px-5 max-[640px]:pb-14 max-[640px]:pt-[42px]">
+          <p className="mb-3 text-xs font-bold uppercase tracking-[0.14em] text-[#6f86a5]">Experiment 01</p>
+          <h1 className="m-0 max-w-[650px] font-serif text-[clamp(32px,5vw,54px)] font-medium leading-[1.08] text-[#163f76]">Generate your C++ program report</h1>
+          <p className="mb-[58px] mt-[18px] max-w-[590px] text-base leading-[1.7] text-[#697487] max-[640px]:mb-[42px]">Upload one or more source files and receive a formatted PDF with the code and execution output.</p>
 
-          <div className="section-heading">
-            <span className="section-number">01</span>
-            <h2>Program source</h2>
+          <div className="mb-4 flex items-center gap-3.5">
+            <span className="font-mono text-xs font-bold text-[#2c70b7]">01</span>
+            <h2 className="m-0 font-serif text-[23px] font-medium text-[#26364d]">Program source</h2>
           </div>
 
-          <div {...getRootProps()} className={`upload-zone ${isDragActive ? 'is-dragging' : ''} ${loading ? 'is-loading' : ''}`}>
+          <div {...getRootProps()} className={`flex min-h-[116px] cursor-pointer items-center gap-5 border border-dashed border-[#9db2cb] bg-[#f8fafc] px-7 py-6 transition duration-150 hover:-translate-y-0.5 hover:border-[#2c70b7] hover:bg-[#f0f6fc] max-[640px]:p-5 ${isDragActive ? '-translate-y-0.5 border-[#2c70b7] bg-[#f0f6fc]' : ''} ${loading ? 'cursor-wait opacity-70' : ''}`}>
             <input {...getInputProps()} />
-            <div className="upload-mark">{loading ? '...' : '{ }'}</div>
+            <div className="grid h-[54px] w-[54px] flex-none place-items-center border border-[#c8d7e7] font-mono text-[17px] text-[#2c70b7] max-[640px]:h-[42px] max-[640px]:w-[42px]">{loading ? '...' : '{ }'}</div>
             <div>
-              <p className="upload-title">
+              <p className="mb-[5px] text-base font-bold text-[#243a58]">
                 {loading ? 'Compiling and preparing your report' : isDragActive ? 'Release to add your files' : 'Drop C++ files here'}
               </p>
-              <p className="upload-subtitle">{loading ? 'This can take a few seconds.' : 'or click to browse .cpp files'}</p>
+              <p className="text-[13px] text-[#7a8799]">{loading ? 'This can take a few seconds.' : 'or click to browse .cpp files'}</p>
             </div>
-            <span className="upload-arrow" aria-hidden="true">-&gt;</span>
+            <span className="ml-auto font-mono text-[22px] text-[#2c70b7] max-[640px]:hidden" aria-hidden="true">-&gt;</span>
           </div>
 
           {selectedFiles.length > 0 && !loading && (
-            <div className="file-list" aria-live="polite">
-              <span className="file-count">{selectedFiles.length} file{selectedFiles.length === 1 ? '' : 's'} ready</span>
-              {selectedFiles.map((file) => <span className="file-chip" key={`${file.name}-${file.lastModified}`}>{file.name}</span>)}
+            <div className="mt-3.5 flex flex-wrap items-center gap-2" aria-live="polite">
+              <span className="text-xs font-bold text-[#526079]">{selectedFiles.length} file{selectedFiles.length === 1 ? '' : 's'} ready</span>
+              {selectedFiles.map((file) => <span className="border border-[#dbe3ec] px-[9px] py-[5px] font-mono text-[11px] text-[#687284]" key={`${file.name}-${file.lastModified}`}>{file.name}</span>)}
             </div>
           )}
 
-          {error && <p className="error-message" role="alert">{error}</p>}
+          {error && <p className="mt-3.5 text-[13px] text-[#b34242]" role="alert">{error}</p>}
 
-          <div className="section-heading output-heading">
-            <span className="section-number">02</span>
-            <h2>Execution output</h2>
+          <div className="mb-4 mt-14 flex items-center gap-3.5">
+            <span className="font-mono text-xs font-bold text-[#2c70b7]">02</span>
+            <h2 className="m-0 font-serif text-[23px] font-medium text-[#26364d]">Execution output</h2>
           </div>
 
-          <div className="terminal-window" aria-label="Terminal output preview">
-            <div className="terminal-tabs">
-              <span>Postman Console</span><span>Problems</span><span>Output</span><span className="active-tab">Terminal</span><span>Ports</span>
-              <span className="terminal-shell">powershell</span>
+          <div className="border border-[#dfe4e9]" aria-label="Terminal output preview">
+            <div className="flex min-h-9 items-end gap-1 overflow-x-auto whitespace-nowrap bg-[#f2f3f5] px-2.5 text-[10px] uppercase tracking-[0.07em] text-[#98a1ad] max-[640px]:gap-0">
+              <span className="px-[9px] pb-2 pt-2.5 max-[640px]:px-1.5">Postman Console</span><span className="px-[9px] pb-2 pt-2.5 max-[640px]:px-1.5">Problems</span><span className="px-[9px] pb-2 pt-2.5 max-[640px]:px-1.5">Output</span><span className="border-b-2 border-[#3478c0] px-[9px] pb-2 pt-2.5 font-bold text-[#45566e] max-[640px]:px-1.5">Terminal</span><span className="px-[9px] pb-2 pt-2.5 max-[640px]:px-1.5">Ports</span>
+              <span className="ml-auto lowercase tracking-normal text-[#7a8799] max-[640px]:hidden">powershell</span>
             </div>
-            <div className="terminal-body">
-              <p><span className="prompt-symbol">○</span> PS C:\OOPS LAB&gt; <span className="muted">upload your program to execute</span></p>
-              <p className="terminal-result">Your compiled output will appear in the generated PDF.</p>
-              <p><span className="prompt-symbol">○</span> PS C:\OOPS LAB&gt; <span className="cursor" /></p>
+            <div className="min-h-[146px] overflow-x-auto bg-white p-5 font-mono text-xs leading-8 text-[#38475c]">
+              <p className="whitespace-nowrap"><span className="mr-1.5 text-[#a1aab5]">○</span> PS C:\OOPS LAB&gt; <span className="text-[#8a95a3]">upload your program to execute</span></p>
+              <p className="whitespace-nowrap pl-5 text-[#8a95a3]">Your compiled output will appear in the generated PDF.</p>
+              <p className="whitespace-nowrap"><span className="mr-1.5 text-[#a1aab5]">○</span> PS C:\OOPS LAB&gt; <span className="ml-[3px] inline-block h-3.5 w-[7px] translate-y-0.5 animate-pulse bg-[#35455a]" /></p>
             </div>
           </div>
         </div>
-        <footer className="report-footer"><span>LAB REPORT GENERATOR</span><span>2025 / 2026</span></footer>
+        <footer className="flex justify-between gap-6 border-t border-[#e6e9ed] px-16 py-7 text-[11px] uppercase tracking-[0.1em] text-[#687284] max-[640px]:px-5 max-[640px]:py-[22px]"><span>LAB REPORT GENERATOR</span><span>2025 / 2026</span></footer>
       </section>
     </main>
   );

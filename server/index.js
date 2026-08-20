@@ -134,28 +134,12 @@ app.post('/api/generate', upload.array('files'), async (req, res) => {
             <html lang="en">
             <head>
                 <meta charset="UTF-8">
-                <style>
-                    body { background: #f3f4f6; min-height: 100vh; padding: 32px; font-family: Arial, sans-serif; }
-                    .report { max-width: 896px; min-height: 100%; margin: 0 auto; padding: 40px; background: white; box-shadow: 0 1px 3px #0000001a; break-inside: avoid; page-break-inside: avoid; }
-                    .report + .report { page-break-before: always; break-before: page; }
-                    .student { color: #4b5563; font-size: 12px; margin-bottom: 40px; text-align: right; }
-                    h1 { color: #10346c; font-size: 20px; margin: 0 0 24px; }
-                    .label { color: #111827; font-size: 14px; font-weight: bold; margin-bottom: 8px; }
-                    .code { background: #f8f9fb; color: #0a106c; padding: 24px; margin: 0 0 32px; white-space: pre-wrap; overflow-wrap: anywhere; font-family: Consolas, monospace; font-size: 12px; line-height: 1.7; }
-                    .terminal { width: 91.666667%; max-width: 800px; border: 1px solid #e5e7eb; }
-                    .tabs { display: flex; align-items: flex-end; padding: 8px 8px 0; background: #f2f3f5; color: #9ca3af; font-size: 10px; text-transform: uppercase; letter-spacing: .05em; }
-                    .tabs span { padding: 0 12px 8px; }
-                    .tabs .active { border-bottom: 2px solid #3b82f6; color: #374151; font-weight: bold; }
-                    .shell { margin-left: auto; text-transform: lowercase; letter-spacing: 0; }
-                    .output { padding: 16px; background: white; color: #1f2937; font-family: Consolas, monospace; font-size: 12px; line-height: 2; white-space: pre-wrap; overflow-wrap: anywhere; }
-                    .prompt { color: #9ca3af; margin-right: 4px; }
-                    .result { padding-left: 20px; }
-                </style>
+                <script src="https://cdn.tailwindcss.com"></script>
             </head>
-            <body>
+            <body class="min-h-screen bg-gray-100 p-8 font-sans">
         `;
 
-        for (const file of files) {
+        for (const [fileIndex, file] of files.entries()) {
             const fileContent = file.buffer.toString('utf-8');
             
             // Read the first question comment, supporting both // and /* ... */ styles.
@@ -170,21 +154,21 @@ app.post('/api/generate', upload.array('files'), async (req, res) => {
 
             // Append this file's result to the HTML template
             combinedHtml += `
-                <div class="report">
-                    <div class="student">Basant Singh Jamwal (2025BCSE085)</div>
-                    <h1>
+                <div class="report mx-auto min-h-full max-w-4xl break-inside-avoid bg-white p-10 shadow-sm ${fileIndex > 0 ? 'break-before-page' : ''}">
+                    <div class="mb-10 text-right text-xs text-gray-600">Basant Singh Jamwal (2025BCSE085)</div>
+                    <h1 class="mb-6 text-xl text-[#10346c]">
                         ${escapeHtml(question)}
                     </h1>
                     
-                    <div class="label">Code:</div>
-                    <pre class="code">${escapeHtml(displayContent)}</pre>
+                    <div class="mb-2 text-sm font-bold text-gray-900">Code:</div>
+                    <pre class="mb-8 wrap-anywhere whitespace-pre-wrap bg-[#f8f9fb] p-6 font-mono text-xs leading-[1.7] text-[#0a106c]">${escapeHtml(displayContent)}</pre>
                     
-                    <div class="label">Output:</div>
-                    <div class="terminal">
-                        <div class="tabs">
-                            <span>Postman Console</span><span>Problems</span><span>Output</span><span class="active">Terminal</span><span>Ports</span><span class="shell">powershell</span>
+                    <div class="mb-2 text-sm font-bold text-gray-900">Output:</div>
+                    <div class="w-11/12 max-w-200 border border-gray-200">
+                        <div class="flex items-end bg-[#f2f3f5] px-2 pt-2 text-[10px] uppercase tracking-[.05em] text-gray-400">
+                            <span class="px-3 pb-2">Postman Console</span><span class="px-3 pb-2">Problems</span><span class="px-3 pb-2">Output</span><span class="border-b-2 border-blue-500 px-3 pb-2 font-bold text-gray-700">Terminal</span><span class="px-3 pb-2">Ports</span><span class="ml-auto px-0 pb-2 lowercase tracking-normal">powershell</span>
                         </div>
-                        <div class="output"><div><span class="prompt">○</span> PS C:\OOPS LAB&gt; .\program.exe</div><div class="result">${escapeHtml(output)}</div><div><span class="prompt">○</span> PS C:\OOPS LAB&gt; <span>_</span></div></div>
+                        <div class="wrap-anywhere whitespace-pre-wrap bg-white p-4 font-mono text-xs leading-8 text-gray-800"><div><span class="mr-1 text-gray-400">○</span> PS C:\OOPS LAB&gt; .\program.exe</div><div class="pl-5">${escapeHtml(output)}</div><div><span class="mr-1 text-gray-400">○</span> PS C:\OOPS LAB&gt; <span>_</span></div></div>
                     </div>
                 </div>
             `;
