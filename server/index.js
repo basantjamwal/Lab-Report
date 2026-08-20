@@ -144,7 +144,7 @@ app.post('/api/generate', upload.array('files'), async (req, res) => {
             </head>
             <body class="min-h-screen bg-gray-100 p-8 font-sans">
         `;
-
+        //loop on files that are uploaded
         for (const [fileIndex, file] of files.entries()) {
             const fileContent = file.buffer.toString('utf-8');
 
@@ -186,7 +186,6 @@ app.post('/api/generate', upload.array('files'), async (req, res) => {
         const browser = await puppeteer.launch({ headless: true });
         const page = await browser.newPage();
         await page.setContent(combinedHtml, { waitUntil: 'networkidle0' });
-
         const pdfBuffer = await page.pdf({
             format: 'A4',
             printBackground: true
